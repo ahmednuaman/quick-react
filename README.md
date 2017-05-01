@@ -1,4 +1,7 @@
 # Quick React
+[![CircleCI](https://circleci.com/gh/ahmednuaman/quick-react.svg?style=svg)](https://circleci.com/gh/ahmednuaman/quick-react)
+
+
 > It does what it says on the tin
 
 ## Why?
