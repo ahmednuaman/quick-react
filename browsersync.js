@@ -37,7 +37,8 @@ browserSync({
     ]
   },
   files: [
-    'build/asset/css/*.css',
-    'build/asset/img/*'
+    `${BUILD}/asset/css/*.css`,
+    `${BUILD}/asset/img/*`,
+    `${BUILD}/*.html`
   ]
 })

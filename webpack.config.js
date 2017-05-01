@@ -12,9 +12,8 @@ const PKG = require('./package.json')
 const PORT = process.env.PORT
 const PRODUCTION = process.env.NODE_ENV === 'production'
 
-const devServer = !PRODUCTION
-  ? ['react-hot-loader/patch', `webpack-hot-middleware/client?http://localhost:${PORT}`, 'webpack/hot/only-dev-server']
-  : []
+const devServer = PRODUCTION ? [] : ['webpack/hot/dev-server', 'webpack-hot-middleware/client']
+const reactHotLoader = PRODUCTION ? [] : ['react-hot-loader']
 
 let plugins = [
   new webpack.DefinePlugin(_.mapValues({
@@ -83,7 +82,8 @@ module.exports = {
     }, {
       exclude: /node_modules/,
       test: /\.jsx?$/,
-      use: [{
+      use: [
+        ...reactHotLoader, {
         loader: 'babel-loader'
       }]
     }, {

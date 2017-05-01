@@ -6,7 +6,8 @@
   "scripts": {
     "browser-sync": "node ./browsersync.js",
     "build": "npm test && npm run webpack",
-    "start": "PORT=$(get-port) concurrently \"npm run browser-sync\" \"npm run watch\"",
+    "deploy": "cross-env NODE_ENV=production npm run build",
+    "start": "cross-env PORT=$(get-port) concurrently \"npm run browser-sync\" \"npm run watch\"",
     "test": "standard",
     "watch": "concurrently \"npm run watch:test\" \"npm run webpack -- --watch\"",
     "watch:test": "onchange \"**/*.js\" -- npm test",
@@ -33,6 +34,7 @@
     "browser-sync": "^2.18.8",
     "clean-webpack-plugin": "^0.1.16",
     "concurrently": "^3.4.0",
+    "cross-env": "^4.0.0",
     "css-loader": "^0.28.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
