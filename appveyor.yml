@@ -9,5 +9,5 @@ install:
 test_script:
   - npm test
 
-build:
+build_script:
   - npm run deploy
