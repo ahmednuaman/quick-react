@@ -13,7 +13,6 @@ const BUILD = path.resolve(__dirname, 'build')
 
 browserSync({
   server: {
-    port: process.env.PORT,
     baseDir: BUILD,
     middleware: [
       (req, res, next) => {
@@ -37,7 +36,8 @@ browserSync({
     ]
   },
   files: [
-    `${BUILD}/asset/css/*.css`,
+    `${BUILD}/asset/css/*`,
+    `${BUILD}/asset/font/*`,
     `${BUILD}/asset/img/*`,
     `${BUILD}/*.html`
   ]

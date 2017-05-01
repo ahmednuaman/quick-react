@@ -9,11 +9,12 @@ const WebpackHTMLPlugin = require('html-webpack-plugin')
 const BUILD = path.resolve(__dirname, 'build')
 const SRC = path.resolve(__dirname, 'src')
 const PKG = require('./package.json')
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 const PRODUCTION = process.env.NODE_ENV === 'production'
 
-const devServer = PRODUCTION ? [] : ['webpack/hot/dev-server', 'webpack-hot-middleware/client']
-const reactHotLoader = PRODUCTION ? [] : ['react-hot-loader']
+const ENTRY = !PRODUCTION
+  ? ['react-hot-loader/patch', `webpack-hot-middleware/client?http://localhost:${PORT}`, 'webpack/hot/only-dev-server']
+  : []
 
 let plugins = [
   new webpack.DefinePlugin(_.mapValues({
@@ -47,7 +48,7 @@ module.exports = {
   devtool: PRODUCTION ? false : 'eval-source-map',
   entry: {
     'asset/js/app.js': [
-      ...devServer,
+      ...ENTRY,
       './js/app',
       'bootstrap/less/bootstrap'
     ]
@@ -71,21 +72,14 @@ module.exports = {
           limit: 1000,
           name: '/asset/img/[hash].[ext]'
         }
-      }, {
-        loader: 'img-loader'
-      }]
+      }, 'img-loader']
     }, {
       test: /\.json$/,
-      use: [{
-        loader: 'json-loader'
-      }]
+      use: ['json-loader']
     }, {
       exclude: /node_modules/,
       test: /\.jsx?$/,
-      use: [
-        ...reactHotLoader, {
-        loader: 'babel-loader'
-      }]
+      use: ['babel-loader', ...[PRODUCTION ? null : 'webpack-module-hot-accept']]
     }, {
       test: /\.less$/,
       use: WebpackExtractTextPlugin.extract({
@@ -97,9 +91,7 @@ module.exports = {
             sourceMap: !PRODUCTION,
             modules: true
           }
-        }, {
-          loader: 'resolve-url-loader'
-        }, {
+        }, 'resolve-url-loader', {
           loader: 'less-loader',
           options: {
             sourceMap: true
