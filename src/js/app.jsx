@@ -4,6 +4,6 @@ import React from 'react'
 import HelloDev from './component/hello-dev'
 
 render(
-  <HelloDev name='Randeep' />,
+  <HelloDev name='Ahmed' />,
   document.getElementById('app')
 )

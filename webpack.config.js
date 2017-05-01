@@ -24,13 +24,15 @@ let plugins = [
   })
 ]
 
+const devServer = PRODUCTION ? [] : ['webpack/hot/dev-server', 'webpack-hot-middleware/client']
+
 if (PRODUCTION) {
   plugins.unshift(
     new WebpackCleanPlugin([BUILD])
   )
 } else {
   plugins.push(
-    // new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   )
 }
@@ -39,8 +41,10 @@ module.exports = {
   context: SRC,
   devtool: PRODUCTION ? false : 'eval-source-map',
   entry: {
-    // 'asset/js/app.js': ['webpack/hot/dev-server', 'webpack-hot-middleware/client', './js/app']
-    'asset/js/app.js': ['./js/app']
+    'asset/js/app.js': [
+      ...devServer,
+      './js/app'
+    ]
   },
   module: {
     rules: [{
