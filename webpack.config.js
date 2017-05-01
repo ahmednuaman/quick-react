@@ -79,7 +79,7 @@ module.exports = {
     }, {
       exclude: /node_modules/,
       test: /\.jsx?$/,
-      use: ['babel-loader', ...[PRODUCTION ? null : 'webpack-module-hot-accept']]
+      use: ['babel-loader']
     }, {
       test: /\.less$/,
       use: WebpackExtractTextPlugin.extract({
