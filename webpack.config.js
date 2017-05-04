@@ -20,7 +20,10 @@ const plugins = [
   new webpack.DefinePlugin(_.mapValues({
     PRODUCTION
   }, JSON.stringify)),
-  new WebpackExtractTextPlugin('asset/css/asset.css'),
+  new WebpackExtractTextPlugin({
+    allChunks: true,
+    filename: 'asset/css/app.css'
+  }),
   new WebpackHTMLPlugin({
     title: PKG.name,
     template: './html/index',
