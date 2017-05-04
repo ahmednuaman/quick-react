@@ -44,10 +44,18 @@ const lessLoader = (include, modules) => ({
       loader: 'css-loader',
       options: {
         modules,
+        importLoaders: 3,
         minimize: PRODUCTION,
         sourceMap: !PRODUCTION
       }
     }, 'resolve-url-loader', {
+      loader: 'postcss-loader',
+      options: {
+        plugins: () => [
+          require('autoprefixer')
+        ]
+      }
+    }, {
       loader: 'less-loader',
       options: {
         sourceMap: true
