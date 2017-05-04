@@ -13,10 +13,10 @@ const PORT = process.env.PORT || 3000
 const PRODUCTION = process.env.NODE_ENV === 'production'
 
 const ENTRY = !PRODUCTION
-  ? ['react-hot-loader/patch', `webpack-hot-middleware/client?http://localhost:${PORT}`, 'webpack/hot/only-dev-server']
+  ? [`webpack-hot-middleware/client?http://localhost:${PORT}`, 'webpack/hot/only-dev-server']
   : []
 
-let plugins = [
+const plugins = [
   new webpack.DefinePlugin(_.mapValues({
     PRODUCTION
   }, JSON.stringify)),
@@ -31,6 +31,27 @@ let plugins = [
     hash: true
   })
 ]
+
+const lessLoader = (include, modules) => ({
+  include,
+  test: /\.less$/,
+  use: WebpackExtractTextPlugin.extract({
+    fallback: 'style-loader',
+    use: [{
+      loader: 'css-loader',
+      options: {
+        modules,
+        minimize: PRODUCTION,
+        sourceMap: !PRODUCTION
+      }
+    }, 'resolve-url-loader', {
+      loader: 'less-loader',
+      options: {
+        sourceMap: true
+      }
+    }]
+  })
+})
 
 if (PRODUCTION) {
   plugins.unshift(new WebpackCleanPlugin([BUILD]))
@@ -80,25 +101,7 @@ module.exports = {
       exclude: /node_modules/,
       test: /\.jsx?$/,
       use: ['babel-loader']
-    }, {
-      test: /\.less$/,
-      use: WebpackExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: [{
-          loader: 'css-loader',
-          options: {
-            minimize: PRODUCTION,
-            sourceMap: !PRODUCTION,
-            modules: true
-          }
-        }, 'resolve-url-loader', {
-          loader: 'less-loader',
-          options: {
-            sourceMap: true
-          }
-        }]
-      })
-    }]
+    }, lessLoader(/node_modules/, false), lessLoader(SRC, true)]
   },
   resolve: {
     extensions: ['.html', '.js', '.json', '.jsx', '.less']
