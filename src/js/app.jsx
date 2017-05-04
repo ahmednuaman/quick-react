@@ -3,14 +3,12 @@ import HelloDev from './component/hello-dev'
 import React from 'react'
 
 render(
-  <div className='container-fluid'>
-    <nav className='navbar navbar-inverse'>
-      <div className='container-fluid'>
-        <div className='navbar-header'>
-          <HelloDev name='Ahmed' />
-        </div>
+  <nav className='navbar navbar-inverse'>
+    <div className='container-fluid'>
+      <div className='navbar-header'>
+        <HelloDev name='Ahmed' />
       </div>
-    </nav>
-  </div>,
+    </div>
+  </nav>,
   document.getElementById('app')
 )
